@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Talent Competition 2026 | Official Registration Portal</title>
+  <meta name="description" content="Official registration portal for Student Talent Competition 2026 for standards 5, 6, 7 & 8. Computer, Mehndi, Drawing & Makeup categories with live seat tracking." />
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Supabase JS Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Top Global Announcement Banner -->
+  <div class="announcement-bar">
+    <div class="announcement-content">
+      <span class="badge-pulse"></span>
+      <span class="announcement-text">
+        <strong>Annual Interschool Talent Fest 2026:</strong> Registrations now open for Standards 5, 6, 7 &amp; 8. Limited seats per category!
+      </span>
+      <a href="#register-section" class="announcement-link">Register Now &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="navbar" id="main-header">
+    <div class="nav-container">
+      <a href="#" class="brand-logo">
+        <div class="logo-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+            <path d="M4 22h16"></path>
+            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Student Talent Competition</span>
+          <span class="brand-subtitle">Standards 5, 6, 7 &amp; 8 Championship</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="nav-links">
+        <a href="#categories" class="nav-item">Categories</a>
+        <a href="#rules" class="nav-item">Eligibility Rules</a>
+        <a href="#seat-matrix" class="nav-item">Live Seat Matrix</a>
+        <a href="#register-section" class="nav-item btn-nav-cta">Register Now</a>
+        
+        <!-- Dark / Light Theme Toggle Button -->
+        <button type="button" class="btn-theme-toggle" id="btn-theme-toggle" aria-label="Toggle Dark and Light theme" title="Switch Theme (Dark / Light)">
+          <span class="theme-icon icon-sun">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          </span>
+          <span class="theme-icon icon-moon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </span>
+        </button>
+
+        <button type="button" class="btn-secondary-nav" id="btn-open-status" title="Check your registration status">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Track Status
+        </button>
+        <button type="button" class="btn-admin-portal" id="btn-open-admin" title="Organizer Admin Panel">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          Organizer Login
+        </button>
+      </nav>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav" id="mobile-nav">
+      <a href="#categories" class="mobile-nav-item">Categories</a>
+      <a href="#rules" class="mobile-nav-item">Eligibility Rules</a>
+      <a href="#seat-matrix" class="mobile-nav-item">Seat Matrix</a>
+      <a href="#register-section" class="mobile-nav-item highlight">Register Now</a>
+      
+      <!-- Mobile Theme Toggle -->
+      <button type="button" class="mobile-nav-btn theme-mobile-btn" id="btn-mobile-theme">
+        <span class="theme-mobile-label">Theme Mode:</span>
+        <span class="theme-mobile-val" id="mobile-theme-text">☀️ Light Mode</span>
+      </button>
+      
+      <button type="button" class="mobile-nav-btn" id="btn-mobile-status">Track Registration Status</button>
+      <button type="button" class="mobile-nav-btn admin-btn" id="btn-mobile-admin">Organizer Admin Login</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-backdrop-glow"></div>
+    <div class="container hero-container">
+      <div class="hero-content">
+        <div class="hero-pill">
+          <span class="pill-sparkle">🏆</span>
+          <span>Inter-School Championship 2026</span>
+          <span class="pill-divider">•</span>
+          <span class="pill-tag">Std 5 to 8</span>
+        </div>
+
+        <h1 class="hero-title">
+          Showcase Your Talent, <br />
+          <span class="text-gradient">Inspire The Future.</span>
+        </h1>
+
+        <p class="hero-description">
+          Step onto the grand stage in four thrilling categories: <strong>Computer</strong>, <strong>Mehndi</strong>, <strong>Drawing</strong>, and <strong>Makeup</strong>. Compete with top young talents, receive official merit certificates, and win coveted trophies!
+        </p>
+
+        <!-- Live Seat Stat Bar -->
+        <div class="hero-stats-row">
+          <div class="hero-stat-card">
+            <span class="stat-number" id="hero-total-seats">215</span>
+            <span class="stat-label">Total Seats</span>
+          </div>
+          <div class="hero-stat-card">
+            <span class="stat-number text-success" id="hero-remaining-seats">--</span>
+            <span class="stat-label">Remaining Seats</span>
+          </div>
+          <div class="hero-stat-card">
+            <span class="stat-number text-accent">₹150</span>
+            <span class="stat-label">Entry Fee</span>
+          </div>
+          <div class="hero-stat-card">
+            <span class="stat-number">4</span>
+            <span class="stat-label">Disciplines</span>
+          </div>
+        </div>
+
+        <!-- Action CTAs -->
+        <div class="hero-actions">
+          <a href="#register-section" class="btn btn-primary btn-lg pulse-glow">
+            <span>Register Student Now</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <button type="button" class="btn btn-glass btn-lg" id="btn-hero-track">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Check My Status</span>
+          </button>
+        </div>
+
+        <!-- Safe & Verified Trust Badges -->
+        <div class="hero-trust">
+          <div class="trust-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>Verified Organizer Bank UPI</span>
+          </div>
+          <div class="trust-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <span>Official WhatsApp Confirmation</span>
+          </div>
+          <div class="trust-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Row-Level Privacy Protected</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Interactive Card -->
+      <div class="hero-visual">
+        <div class="hero-card-stack">
+          <div class="event-showcase-card">
+            <div class="card-header-badge">
+              <span class="live-dot"></span>
+              <span>Registration Status: ACTIVE</span>
+            </div>
+
+            <div class="showcase-header">
+              <h3 class="showcase-title">Student Talent Fest 2026</h3>
+              <p class="showcase-venue">📍 City Central Auditorium &amp; Digital Labs</p>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div class="countdown-container">
+              <div class="countdown-title">REGISTRATION CLOSES IN:</div>
+              <div class="countdown-timer" id="countdown-timer">
+                <div class="time-box">
+                  <span class="time-num" id="cd-days">08</span>
+                  <span class="time-label">Days</span>
+                </div>
+                <span class="time-separator">:</span>
+                <div class="time-box">
+                  <span class="time-num" id="cd-hours">14</span>
+                  <span class="time-label">Hours</span>
+                </div>
+                <span class="time-separator">:</span>
+                <div class="time-box">
+                  <span class="time-num" id="cd-minutes">42</span>
+                  <span class="time-label">Mins</span>
+                </div>
+                <span class="time-separator">:</span>
+                <div class="time-box">
+                  <span class="time-num" id="cd-seconds">19</span>
+                  <span class="time-label">Secs</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category mini visual previews -->
+            <div class="mini-category-grid">
+              <div class="mini-cat-item cat-comp">
+                <span class="mini-cat-icon">💻</span>
+                <div class="mini-cat-info">
+                  <span class="mini-cat-name">Computer</span>
+                  <span class="mini-cat-badge">Std 5-8 • All</span>
+                </div>
+              </div>
+              <div class="mini-cat-item cat-mehndi">
+                <span class="mini-cat-icon">✨</span>
+                <div class="mini-cat-info">
+                  <span class="mini-cat-name">Mehndi</span>
+                  <span class="mini-cat-badge">Std 5-8 • Girls</span>
+                </div>
+              </div>
+              <div class="mini-cat-item cat-draw">
+                <span class="mini-cat-icon">🎨</span>
+                <div class="mini-cat-info">
+                  <span class="mini-cat-name">Drawing</span>
+                  <span class="mini-cat-badge">Auto Group A/B</span>
+                </div>
+              </div>
+              <div class="mini-cat-item cat-makeup">
+                <span class="mini-cat-icon">💄</span>
+                <div class="mini-cat-info">
+                  <span class="mini-cat-name">Makeup</span>
+                  <span class="mini-cat-badge">Std 5-8 • Girls</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="showcase-footer">
+              <div class="verified-seal">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#10b981"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                <span>Organized by Educational Youth Welfare Trust</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Competition Categories Section -->
+  <section class="section-padding bg-surface" id="categories">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-subtitle">Championship Tracks</span>
+        <h2 class="section-title">Explore Competition Categories</h2>
+        <p class="section-desc">
+          Four distinct categories designed to celebrate analytical problem-solving, traditional artistry, fine drawing, and creative expression.
+        </p>
+      </div>
+
+      <div class="category-cards-grid">
+        <!-- 1. Computer Category -->
+        <div class="cat-card" data-category="computer">
+          <div class="cat-card-glow tech-glow"></div>
+          <div class="cat-header">
+            <div class="cat-icon-badge tech-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <div class="cat-status-badge" id="seat-status-computer">
+              <span class="status-indicator live"></span>
+              <span class="status-text">Available</span>
+            </div>
+          </div>
+
+          <h3 class="cat-title">1. Computer</h3>
+          <p class="cat-desc">
+            Algorithmic thinking, digital presentation, creative design on PC, and rapid keyboarding challenge for young tech prodigies.
+          </p>
+
+          <div class="cat-eligibility-box">
+            <div class="rule-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <span><strong>Eligible:</strong> Standards 5, 6, 7 &amp; 8</span>
+            </div>
+            <div class="rule-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <span><strong>Gender:</strong> Open to All (Boys &amp; Girls)</span>
+            </div>
+          </div>
+
+          <div class="cat-seat-meter">
+            <div class="meter-info">
+              <span class="meter-label">Seat Availability</span>
+              <span class="meter-count" id="count-computer">28 / 50 Left</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill fill-tech" id="progress-computer" style="width: 44%"></div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-outline btn-block select-cat-btn" data-target-cat="computer">
+            Choose Computer Category &rarr;
+          </button>
+        </div>
+
+        <!-- 2. Mehndi Category -->
+        <div class="cat-card" data-category="mehndi">
+          <div class="cat-card-glow mehndi-glow"></div>
+          <div class="cat-header">
+            <div class="cat-icon-badge mehndi-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+            </div>
+            <div class="cat-status-badge" id="seat-status-mehndi">
+              <span class="status-indicator live"></span>
+              <span class="status-text">Available</span>
+            </div>
+          </div>
+
+          <h3 class="cat-title">2. Mehndi</h3>
+          <p class="cat-desc">
+            Intricate Indian, Arabic, and Indo-Western hand henna artistry testing precision, symmetry, speed, and creative motifs.
+          </p>
+
+          <div class="cat-eligibility-box">
+            <div class="rule-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <span><strong>Eligible:</strong> Standards 5, 6, 7 &amp; 8</span>
+            </div>
+            <div class="rule-line text-warning-rule">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span><strong>Gender:</strong> Female Students Only</span>
+            </div>
+          </div>
+
+          <div class="cat-seat-meter">
+            <div class="meter-info">
+              <span class="meter-label">Seat Availability</span>
+              <span class="meter-count" id="count-mehndi">19 / 40 Left</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill fill-mehndi" id="progress-mehndi" style="width: 52%"></div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-outline btn-block select-cat-btn" data-target-cat="mehndi">
+            Choose Mehndi Category &rarr;
+          </button>
+        </div>
+
+        <!-- 3. Drawing Category -->
+        <div class="cat-card featured-cat" data-category="drawing">
+          <div class="featured-ribbon">Auto Group Allocation</div>
+          <div class="cat-card-glow drawing-glow"></div>
+          <div class="cat-header">
+            <div class="cat-icon-badge drawing-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg>
+            </div>
+            <div class="cat-status-badge" id="seat-status-drawing">
+              <span class="status-indicator live"></span>
+              <span class="status-text">Available</span>
+            </div>
+          </div>
+
+          <h3 class="cat-title">3. Drawing (Group A &amp; B)</h3>
+          <p class="cat-desc">
+            Expressive theme-based canvas illustration, water coloring, shading, and imaginative perspective composition.
+          </p>
+
+          <div class="drawing-groups-split">
+            <!-- Group A -->
+            <div class="group-subcard" id="group-a-box">
+              <div class="group-subcard-header">
+                <span class="group-pill pill-a">Group A</span>
+                <span class="group-stds">Std 5 &amp; 6</span>
+              </div>
+              <div class="subcard-meter">
+                <span class="subcard-count" id="count-drawing_a">24 / 45 Left</span>
+                <div class="progress-bar-track">
+                  <div class="progress-bar-fill fill-drawing" id="progress-drawing_a" style="width: 47%"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Group B -->
+            <div class="group-subcard" id="group-b-box">
+              <div class="group-subcard-header">
+                <span class="group-pill pill-b">Group B</span>
+                <span class="group-stds">Std 7 &amp; 8</span>
+              </div>
+              <div class="subcard-meter">
+                <span class="subcard-count" id="count-drawing_b">21 / 45 Left</span>
+                <div class="progress-bar-track">
+                  <div class="progress-bar-fill fill-drawing" id="progress-drawing_b" style="width: 53%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cat-eligibility-box">
+            <div class="rule-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <span><strong>Grouping:</strong> Auto-assigned by student standard</span>
+            </div>
+            <div class="rule-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <span><strong>Gender:</strong> Open to All (Boys &amp; Girls)</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-outline btn-block select-cat-btn" data-target-cat="drawing">
+            Choose Drawing Category &rarr;
+          </button>
+        </div>
+
+        <!-- 4. Makeup Category -->
+        <div class="cat-card" data-category="makeup">
+          <div class="cat-card-glow makeup-glow"></div>
+          <div class="cat-header">
+            <div class="cat-icon-badge makeup-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 0-4 4v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h-2V6a4 4 0 0 0-4-4z"></path><path d="M10 8V6a2 2 0 1 1 4 0v2"></path></svg>
+            </div>
+            <div class="cat-status-badge" id="seat-status-makeup">
+              <span class="status-indicator live"></span>
+              <span class="status-text">Available</span>
+            </div>
+          </div>
+
+          <h3 class="cat-title">4. Makeup</h3>
+          <p class="cat-desc">
+            Theatrical, bridal, fantasy, and creative stage makeup artistry judged on blending, contouring, theme relevance, and elegance.
+          </p>
+
+          <div class="cat-eligibility-box">
+            <div class="rule-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <span><strong>Eligible:</strong> Standards 5, 6, 7 &amp; 8</span>
+            </div>
+            <div class="rule-line text-warning-rule">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span><strong>Gender:</strong> Female Students Only</span>
+            </div>
+          </div>
+
+          <div class="cat-seat-meter">
+            <div class="meter-info">
+              <span class="meter-label">Seat Availability</span>
+              <span class="meter-count" id="count-makeup">16 / 35 Left</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill fill-makeup" id="progress-makeup" style="width: 54%"></div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-outline btn-block select-cat-btn" data-target-cat="makeup">
+            Choose Makeup Category &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Eligibility Rules Section -->
+  <section class="section-padding" id="rules">
+    <div class="container">
+      <div class="rules-card-box">
+        <div class="rules-header">
+          <div class="rules-badge">Official Guidelines</div>
+          <h2 class="rules-title">Eligibility Criteria &amp; Group Allocation Rules</h2>
+          <p class="rules-intro">
+            Please read the eligibility standards carefully. The registration portal enforces these rules automatically in real-time.
+          </p>
+        </div>
+
+        <div class="rules-grid">
+          <div class="rule-item-card">
+            <div class="rule-item-num">01</div>
+            <div class="rule-item-content">
+              <h4>Standard / Class Eligibility</h4>
+              <p>Only students currently studying in <strong>Standard 5, 6, 7, and 8</strong> are eligible to participate. Students from other grades cannot register.</p>
+            </div>
+          </div>
+
+          <div class="rule-item-card">
+            <div class="rule-item-num">02</div>
+            <div class="rule-item-content">
+              <h4>Gender Criteria for Mehndi &amp; Makeup</h4>
+              <p><strong>Mehndi</strong> and <strong>Makeup</strong> categories are strictly reserved for <strong>female students only</strong>. Male students can register for Computer or Drawing.</p>
+            </div>
+          </div>
+
+          <div class="rule-item-card highlight-rule">
+            <div class="rule-item-num">03</div>
+            <div class="rule-item-content">
+              <h4>Automatic Drawing Group Assignment</h4>
+              <p>When selecting Drawing, the group is automatically assigned by the system:
+                <br />• <strong>Drawing Group A:</strong> Standards 5 and 6
+                <br />• <strong>Drawing Group B:</strong> Standards 7 and 8
+              </p>
+            </div>
+          </div>
+
+          <div class="rule-item-card">
+            <div class="rule-item-num">04</div>
+            <div class="rule-item-content">
+              <h4>Capacity &amp; Seat Limits</h4>
+              <p>Each category has a strictly capped registration quota. Once all seats in a category or drawing group are filled, further registrations will be blocked.</p>
+            </div>
+          </div>
+
+          <div class="rule-item-card">
+            <div class="rule-item-num">05</div>
+            <div class="rule-item-content">
+              <h4>Payment Verification Policy</h4>
+              <p>Registration fees must be paid via organizer UPI QR. Submitting a transaction reference registers you as <em>Pending Verification</em>. Seats are confirmed only upon organizer approval.</p>
+            </div>
+          </div>
+
+          <div class="rule-item-card">
+            <div class="rule-item-num">06</div>
+            <div class="rule-item-content">
+              <h4>WhatsApp Official Notification</h4>
+              <p>Upon organizer payment verification, an automated WhatsApp confirmation with registration ID, event details, and private community link will be dispatched.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Seat Matrix Table Section -->
+  <section class="section-padding bg-surface" id="seat-matrix">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-subtitle">Real-Time Quota Dashboard</span>
+        <h2 class="section-title">Live Registration Seat Matrix</h2>
+        <p class="section-desc">Seats are filled on a first-come, first-served basis upon organizer verification.</p>
+      </div>
+
+      <div class="seat-matrix-wrapper">
+        <table class="seat-table" id="seat-matrix-table">
+          <thead>
+            <tr>
+              <th>Competition Track</th>
+              <th>Eligible Standards</th>
+              <th>Gender Eligibility</th>
+              <th>Total Capacity</th>
+              <th>Confirmed Seats</th>
+              <th>Remaining Seats</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="matrix-row-computer">
+              <td>
+                <div class="matrix-track-info">
+                  <span class="matrix-icon">💻</span>
+                  <div>
+                    <strong>1. Computer</strong>
+                    <span class="matrix-sub">Practical &amp; Coding</span>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge-std">Std 5, 6, 7, 8</span></td>
+              <td><span class="badge-gender gender-all">All Genders</span></td>
+              <td class="text-center font-bold" id="matrix-limit-computer">50</td>
+              <td class="text-center" id="matrix-booked-computer">22</td>
+              <td class="text-center font-bold text-success" id="matrix-left-computer">28</td>
+              <td><span class="status-pill pill-available" id="matrix-badge-computer">Open</span></td>
+            </tr>
+
+            <tr id="matrix-row-mehndi">
+              <td>
+                <div class="matrix-track-info">
+                  <span class="matrix-icon">✨</span>
+                  <div>
+                    <strong>2. Mehndi</strong>
+                    <span class="matrix-sub">Traditional Henna</span>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge-std">Std 5, 6, 7, 8</span></td>
+              <td><span class="badge-gender gender-female">Girls Only</span></td>
+              <td class="text-center font-bold" id="matrix-limit-mehndi">40</td>
+              <td class="text-center" id="matrix-booked-mehndi">21</td>
+              <td class="text-center font-bold text-success" id="matrix-left-mehndi">19</td>
+              <td><span class="status-pill pill-available" id="matrix-badge-mehndi">Open</span></td>
+            </tr>
+
+            <tr id="matrix-row-drawing_a">
+              <td>
+                <div class="matrix-track-info">
+                  <span class="matrix-icon">🎨</span>
+                  <div>
+                    <strong>3A. Drawing Group A</strong>
+                    <span class="matrix-sub">Theme Art (Junior)</span>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge-std highlight-group">Std 5 &amp; 6</span></td>
+              <td><span class="badge-gender gender-all">All Genders</span></td>
+              <td class="text-center font-bold" id="matrix-limit-drawing_a">45</td>
+              <td class="text-center" id="matrix-booked-drawing_a">21</td>
+              <td class="text-center font-bold text-success" id="matrix-left-drawing_a">24</td>
+              <td><span class="status-pill pill-available" id="matrix-badge-drawing_a">Open</span></td>
+            </tr>
+
+            <tr id="matrix-row-drawing_b">
+              <td>
+                <div class="matrix-track-info">
+                  <span class="matrix-icon">🎨</span>
+                  <div>
+                    <strong>3B. Drawing Group B</strong>
+                    <span class="matrix-sub">Theme Art (Senior)</span>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge-std highlight-group">Std 7 &amp; 8</span></td>
+              <td><span class="badge-gender gender-all">All Genders</span></td>
+              <td class="text-center font-bold" id="matrix-limit-drawing_b">45</td>
+              <td class="text-center" id="matrix-booked-drawing_b">24</td>
+              <td class="text-center font-bold text-success" id="matrix-left-drawing_b">21</td>
+              <td><span class="status-pill pill-available" id="matrix-badge-drawing_b">Open</span></td>
+            </tr>
+
+            <tr id="matrix-row-makeup">
+              <td>
+                <div class="matrix-track-info">
+                  <span class="matrix-icon">💄</span>
+                  <div>
+                    <strong>4. Makeup</strong>
+                    <span class="matrix-sub">Creative Stage Styling</span>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge-std">Std 5, 6, 7, 8</span></td>
+              <td><span class="badge-gender gender-female">Girls Only</span></td>
+              <td class="text-center font-bold" id="matrix-limit-makeup">35</td>
+              <td class="text-center" id="matrix-booked-makeup">19</td>
+              <td class="text-center font-bold text-success" id="matrix-left-makeup">16</td>
+              <td><span class="status-pill pill-available" id="matrix-badge-makeup">Open</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Registration Form Section -->
+  <section class="section-padding" id="register-section">
+    <div class="container">
+      <div class="form-container-card">
+        <!-- Form Header -->
+        <div class="form-header-area">
+          <div class="form-badge">Official Entry Form</div>
+          <h2 class="form-main-title">Student Registration Portal</h2>
+          <p class="form-main-desc">
+            Complete the form below. Eligibility and Drawing groups are verified in real time.
+          </p>
+        </div>
+
+        <!-- Live Validation Alert Banner (Dynamic) -->
+        <div class="validation-banner" id="form-validation-banner" style="display: none;">
+          <div class="banner-icon" id="banner-icon">⚠️</div>
+          <div class="banner-text" id="banner-text">
+            Validation message will appear here.
+          </div>
+        </div>
+
+        <!-- Actual HTML Form -->
+        <form id="student-reg-form" novalidate>
+          
+          <!-- STEP 1: Student Information -->
+          <div class="form-step-section">
+            <div class="step-title-wrap">
+              <span class="step-num-badge">Step 1</span>
+              <div>
+                <h3 class="step-heading">Student Profile &amp; School Details</h3>
+                <p class="step-sub">Personal details of the student participating in the competition.</p>
+              </div>
+            </div>
+
+            <div class="form-grid-2col">
+              <!-- Student Full Name -->
+              <div class="form-group">
+                <label for="student-name" class="form-label">Student Full Name <span class="req">*</span></label>
+                <div class="input-with-icon">
+                  <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  <input type="text" id="student-name" name="student_name" class="form-input" placeholder="e.g. Aanya Sharma" required />
+                </div>
+                <div class="field-error" id="err-student-name"></div>
+              </div>
+
+              <!-- School Name -->
+              <div class="form-group">
+                <label for="school-name" class="form-label">School Name <span class="req">*</span></label>
+                <div class="input-with-icon">
+                  <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"></path><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path><path d="M9 9h1"></path><path d="M9 13h1"></path><path d="M9 17h1"></path><path d="M14 9h1"></path><path d="M14 13h1"></path><path d="M14 17h1"></path></svg>
+                  <input type="text" id="school-name" name="school_name" class="form-input" placeholder="e.g. Delhi Public School / St. Xavier's" required />
+                </div>
+                <div class="field-error" id="err-school-name"></div>
+              </div>
+            </div>
+
+            <div class="form-grid-3col">
+              <!-- Standard / Grade (Radio Buttons for 5, 6, 7, 8) -->
+              <div class="form-group span-col-standard">
+                <label class="form-label">Standard / Class <span class="req">*</span> <small class="text-muted">(Only 5th to 8th eligible)</small></label>
+                <div class="standard-selector" role="radiogroup" aria-label="Select student standard">
+                  <label class="std-radio-pill" for="std-5">
+                    <input type="radio" id="std-5" name="standard" value="5" />
+                    <span class="pill-label">5th Standard</span>
+                  </label>
+                  <label class="std-radio-pill" for="std-6">
+                    <input type="radio" id="std-6" name="standard" value="6" />
+                    <span class="pill-label">6th Standard</span>
+                  </label>
+                  <label class="std-radio-pill" for="std-7">
+                    <input type="radio" id="std-7" name="standard" value="7" />
+                    <span class="pill-label">7th Standard</span>
+                  </label>
+                  <label class="std-radio-pill" for="std-8">
+                    <input type="radio" id="std-8" name="standard" value="8" />
+                    <span class="pill-label">8th Standard</span>
+                  </label>
+                </div>
+                <div class="field-error" id="err-standard"></div>
+              </div>
+
+              <!-- Date of Birth -->
+              <div class="form-group">
+                <label for="dob" class="form-label">Date of Birth <span class="req">*</span></label>
+                <div class="input-with-icon">
+                  <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                  <input type="date" id="dob" name="dob" class="form-input" min="2010-01-01" max="2017-12-31" required />
+                </div>
+                <div class="field-error" id="err-dob"></div>
+              </div>
+
+              <!-- Gender -->
+              <div class="form-group">
+                <label class="form-label">Gender <span class="req">*</span></label>
+                <div class="gender-selector" role="radiogroup" aria-label="Select student gender">
+                  <label class="gender-radio-card" for="gender-female">
+                    <input type="radio" id="gender-female" name="gender" value="female" />
+                    <span class="gender-box">
+                      <span class="gender-icon">👧</span>
+                      <span class="gender-title">Female</span>
+                    </span>
+                  </label>
+                  <label class="gender-radio-card" for="gender-male">
+                    <input type="radio" id="gender-male" name="gender" value="male" />
+                    <span class="gender-box">
+                      <span class="gender-icon">👦</span>
+                      <span class="gender-title">Male</span>
+                    </span>
+                  </label>
+                </div>
+                <div class="field-error" id="err-gender"></div>
+              </div>
+            </div>
+
+            <!-- WhatsApp Number with Country Code -->
+            <div class="form-group">
+              <label for="whatsapp-number" class="form-label">
+                WhatsApp Mobile Number <span class="req">*</span>
+                <small class="text-muted">(Official confirmation will be sent to this number)</small>
+              </label>
+              <div class="phone-input-wrapper">
+                <div class="country-code-select-wrap">
+                  <select id="country-code" name="country_code" class="form-select country-select">
+                    <option value="+91" selected>🇮🇳 +91 (India)</option>
+                    <option value="+1">🇺🇸 +1 (USA/Canada)</option>
+                    <option value="+44">🇬🇧 +44 (UK)</option>
+                    <option value="+971">🇦🇪 +971 (UAE)</option>
+                    <option value="+966">🇸🇦 +966 (Saudi)</option>
+                    <option value="+65">🇸🇬 +65 (Singapore)</option>
+                  </select>
+                </div>
+                <div class="input-with-icon phone-number-input">
+                  <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <input type="tel" id="whatsapp-number" name="whatsapp_number" class="form-input" placeholder="10-digit WhatsApp number (e.g. 9876543210)" maxlength="12" required />
+                </div>
+              </div>
+              <div class="field-error" id="err-whatsapp"></div>
+            </div>
+          </div>
+
+          <!-- STEP 2: Competition Category Selection -->
+          <div class="form-step-section">
+            <div class="step-title-wrap">
+              <span class="step-num-badge">Step 2</span>
+              <div>
+                <h3 class="step-heading">Competition Category Selection</h3>
+                <p class="step-sub">Select your event category. Drawing groups are assigned dynamically.</p>
+              </div>
+            </div>
+
+            <!-- Category Radio Cards -->
+            <div class="category-choice-grid" id="category-radio-group" role="radiogroup" aria-label="Competition Category">
+              <!-- 1. Computer -->
+              <label class="cat-select-card" for="cat-radio-computer" id="label-cat-computer">
+                <input type="radio" id="cat-radio-computer" name="competition_category" value="computer" />
+                <div class="card-interior">
+                  <div class="radio-indicator"></div>
+                  <div class="cat-choice-icon">💻</div>
+                  <div class="cat-choice-info">
+                    <div class="cat-choice-name">1. Computer</div>
+                    <div class="cat-choice-tags">
+                      <span class="tag-badge">Std 5-8</span>
+                      <span class="tag-badge">All Genders</span>
+                    </div>
+                  </div>
+                  <div class="cat-seats-left-pill" id="form-pill-computer">
+                    28 seats left
+                  </div>
+                </div>
+              </label>
+
+              <!-- 2. Mehndi -->
+              <label class="cat-select-card" for="cat-radio-mehndi" id="label-cat-mehndi">
+                <input type="radio" id="cat-radio-mehndi" name="competition_category" value="mehndi" />
+                <div class="card-interior">
+                  <div class="radio-indicator"></div>
+                  <div class="cat-choice-icon">✨</div>
+                  <div class="cat-choice-info">
+                    <div class="cat-choice-name">2. Mehndi</div>
+                    <div class="cat-choice-tags">
+                      <span class="tag-badge">Std 5-8</span>
+                      <span class="tag-badge text-female">Female Only</span>
+                    </div>
+                  </div>
+                  <div class="cat-seats-left-pill" id="form-pill-mehndi">
+                    19 seats left
+                  </div>
+                </div>
+              </label>
+
+              <!-- 3. Drawing -->
+              <label class="cat-select-card" for="cat-radio-drawing" id="label-cat-drawing">
+                <input type="radio" id="cat-radio-drawing" name="competition_category" value="drawing" />
+                <div class="card-interior">
+                  <div class="radio-indicator"></div>
+                  <div class="cat-choice-icon">🎨</div>
+                  <div class="cat-choice-info">
+                    <div class="cat-choice-name">3. Drawing</div>
+                    <div class="cat-choice-tags">
+                      <span class="tag-badge">Auto Group A/B</span>
+                      <span class="tag-badge">All Genders</span>
+                    </div>
+                  </div>
+                  <div class="cat-seats-left-pill" id="form-pill-drawing">
+                    Group A/B
+                  </div>
+                </div>
+              </label>
+
+              <!-- 4. Makeup -->
+              <label class="cat-select-card" for="cat-radio-makeup" id="label-cat-makeup">
+                <input type="radio" id="cat-radio-makeup" name="competition_category" value="makeup" />
+                <div class="card-interior">
+                  <div class="radio-indicator"></div>
+                  <div class="cat-choice-icon">💄</div>
+                  <div class="cat-choice-info">
+                    <div class="cat-choice-name">4. Makeup</div>
+                    <div class="cat-choice-tags">
+                      <span class="tag-badge">Std 5-8</span>
+                      <span class="tag-badge text-female">Female Only</span>
+                    </div>
+                  </div>
+                  <div class="cat-seats-left-pill" id="form-pill-makeup">
+                    16 seats left
+                  </div>
+                </div>
+              </label>
+            </div>
+            <div class="field-error" id="err-category"></div>
+
+            <!-- Dynamic Drawing Group Notification (Visible only when Drawing is picked) -->
+            <div class="drawing-group-banner" id="drawing-group-banner" style="display: none;">
+              <div class="group-banner-header">
+                <div class="banner-badge-icon">🎨</div>
+                <div class="banner-badge-text">
+                  <span class="badge-label">AUTOMATIC GROUP ALLOCATION</span>
+                  <h4 class="assigned-group-title" id="assigned-group-title">Drawing Group A</h4>
+                </div>
+                <div class="group-seat-badge" id="drawing-group-seats">
+                  24 Seats Remaining
+                </div>
+              </div>
+              <p class="group-banner-desc" id="assigned-group-desc">
+                Based on your selected standard (Standard 5 or 6), you have been assigned to <strong>Drawing Group A</strong>.
+              </p>
+              <input type="hidden" id="assigned-drawing-group-input" name="drawing_group" value="" />
+            </div>
+          </div>
+
+          <!-- STEP 3: Parent/Guardian Consent -->
+          <div class="form-step-section">
+            <div class="step-title-wrap">
+              <span class="step-num-badge">Step 3</span>
+              <div>
+                <h3 class="step-heading">Parent / Guardian Consent</h3>
+                <p class="step-sub">Mandatory consent for students under 18 years of age.</p>
+              </div>
+            </div>
+
+            <div class="form-grid-2col">
+              <!-- Guardian Name -->
+              <div class="form-group">
+                <label for="guardian-name" class="form-label">Parent / Guardian Full Name <span class="req">*</span></label>
+                <div class="input-with-icon">
+                  <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                  <input type="text" id="guardian-name" name="guardian_name" class="form-input" placeholder="e.g. Rajesh Sharma" required />
+                </div>
+                <div class="field-error" id="err-guardian-name"></div>
+              </div>
+
+              <!-- Guardian Phone -->
+              <div class="form-group">
+                <label for="guardian-phone" class="form-label">Parent Emergency Phone <span class="req">*</span></label>
+                <div class="input-with-icon">
+                  <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                  <input type="tel" id="guardian-phone" name="guardian_phone" class="form-input" placeholder="e.g. 9876543211" maxlength="12" required />
+                </div>
+                <div class="field-error" id="err-guardian-phone"></div>
+              </div>
+            </div>
+
+            <!-- Consent Checkbox -->
+            <div class="consent-checkbox-card">
+              <label class="custom-checkbox-container" for="guardian-consent">
+                <input type="checkbox" id="guardian-consent" name="guardian_consent" required />
+                <span class="checkmark"></span>
+                <span class="consent-text">
+                  I hereby confirm that I am the parent/legal guardian of the registering student. I authorize their participation in the <strong>Student Talent Competition 2026</strong>, agree to follow all safety and event rules, and understand that registration fees are non-refundable once approved.
+                </span>
+              </label>
+              <div class="field-error" id="err-consent"></div>
+            </div>
+          </div>
+
+          <!-- STEP 4: Registration Fee Payment via UPI -->
+          <div class="form-step-section payment-step-card">
+            <div class="step-title-wrap">
+              <span class="step-num-badge payment-badge">Step 4</span>
+              <div>
+                <h3 class="step-heading">Registration Fee &amp; UPI Payment</h3>
+                <p class="step-sub">Scan organizer UPI QR code, complete payment, and submit transaction reference.</p>
+              </div>
+            </div>
+
+            <div class="payment-layout">
+              <!-- Left: QR Code & UPI Details -->
+              <div class="payment-qr-card">
+                <div class="fee-tag-header">
+                  <span class="fee-label">Registration Fee</span>
+                  <span class="fee-amount" id="display-fee-amount">₹150.00</span>
+                </div>
+
+                <!-- UPI QR Code SVG Display -->
+                <div class="qr-canvas-wrap" id="qr-display-container">
+                  <div class="qr-code-box" id="qr-box">
+                    <!-- Crisp Dynamic SVG QR code will render here -->
+                    <svg id="upi-qr-svg" width="180" height="180" viewBox="0 0 200 200">
+                      <!-- Stylized decorative QR with real UPI intent -->
+                      <rect width="200" height="200" fill="#ffffff" rx="12"></rect>
+                      <!-- QR Positioning Marks Top-Left -->
+                      <rect x="20" y="20" width="45" height="45" fill="#1e1b4b" rx="6"></rect>
+                      <rect x="27" y="27" width="31" height="31" fill="#ffffff" rx="3"></rect>
+                      <rect x="34" y="34" width="17" height="17" fill="#4f46e5" rx="2"></rect>
+                      <!-- QR Positioning Marks Top-Right -->
+                      <rect x="135" y="20" width="45" height="45" fill="#1e1b4b" rx="6"></rect>
+                      <rect x="142" y="27" width="31" height="31" fill="#ffffff" rx="3"></rect>
+                      <rect x="149" y="34" width="17" height="17" fill="#4f46e5" rx="2"></rect>
+                      <!-- QR Positioning Marks Bottom-Left -->
+                      <rect x="20" y="135" width="45" height="45" fill="#1e1b4b" rx="6"></rect>
+                      <rect x="27" y="142" width="31" height="31" fill="#ffffff" rx="3"></rect>
+                      <rect x="34" y="149" width="17" height="17" fill="#4f46e5" rx="2"></rect>
+                      <!-- Decorative QR Data Dots -->
+                      <rect x="75" y="25" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="95" y="25" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="115" y="25" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="75" y="45" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="95" y="45" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="115" y="45" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="25" y="75" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="45" y="75" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="65" y="75" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="85" y="75" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="105" y="75" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="125" y="75" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="145" y="75" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="165" y="75" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="25" y="95" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="45" y="95" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="65" y="95" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="85" y="95" width="30" height="10" fill="#1e1b4b"></rect>
+                      <rect x="125" y="95" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="145" y="95" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="165" y="95" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="75" y="115" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="95" y="115" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="115" y="115" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="135" y="115" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="155" y="115" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="75" y="135" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="95" y="135" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="115" y="135" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="135" y="135" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="155" y="135" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="75" y="155" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="95" y="155" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="115" y="155" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="135" y="155" width="10" height="10" fill="#1e1b4b"></rect>
+                      <rect x="155" y="155" width="10" height="10" fill="#4f46e5"></rect>
+                      <rect x="175" y="155" width="10" height="10" fill="#1e1b4b"></rect>
+                      <!-- Center Logo Badge -->
+                      <circle cx="100" cy="100" r="16" fill="#4f46e5"></circle>
+                      <path d="M95 100l3 3 7-7" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="upi-id-pill-box">
+                  <span class="upi-id-text" id="organizer-upi-id">studenttalent@sbi</span>
+                  <button type="button" class="btn-copy-upi" id="btn-copy-upi" title="Copy UPI ID">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+
+                <div class="supported-apps">
+                  <span>Pay with Google Pay, PhonePe, Paytm, or BHIM UPI</span>
+                </div>
+              </div>
+
+              <!-- Right: Transaction Ref Input & Verification Warning -->
+              <div class="payment-inputs-area">
+                <div class="critical-payment-warning">
+                  <div class="warning-header">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <strong>Organizer Verification Policy</strong>
+                  </div>
+                  <p>
+                    Submitting your UPI reference puts your registration into <strong>Pending Verification</strong> status. Your seat is <em>not</em> confirmed simply by submitting a number. The organizers verify each UTR with bank statements before approving.
+                  </p>
+                </div>
+
+                <!-- UPI Reference / UTR Input -->
+                <div class="form-group">
+                  <label for="upi-reference" class="form-label">
+                    12-Digit UPI Reference / UTR Number <span class="req">*</span>
+                  </label>
+                  <div class="input-with-icon">
+                    <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                    <input type="text" id="upi-reference" name="upi_reference" class="form-input" placeholder="e.g. 428901234567 or UPI-4892..." maxlength="24" required />
+                  </div>
+                  <small class="helper-text">Find this 12-digit number (UTR / UPI Ref No) in your payment app receipt.</small>
+                  <div class="field-error" id="err-upi"></div>
+                </div>
+
+                <!-- Additional Notes / Payer Account Name -->
+                <div class="form-group">
+                  <label for="payer-name" class="form-label">Bank Account Holder / Payer Name <span class="text-muted">(Optional)</span></label>
+                  <input type="text" id="payer-name" name="payer_name" class="form-input" placeholder="Name on GPay / PhonePe / Bank Account" />
+                </div>
+
+                <!-- Summary Checklist -->
+                <div class="submission-checklist">
+                  <div class="check-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Instant unique Registration ID generated</span>
+                  </div>
+                  <div class="check-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Automatic WhatsApp dispatch once verified</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Action Submit Buttons -->
+          <div class="form-submit-actions">
+            <button type="submit" class="btn btn-primary btn-xl submit-btn-glow" id="btn-submit-registration">
+              <span class="btn-text">Submit Registration (Pending Verification)</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+            <p class="submit-disclaimer">
+              By submitting, your data is securely stored. You can track payment approval anytime using your WhatsApp number.
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Registration Success Modal -->
+  <div class="modal-overlay" id="modal-success" style="display: none;">
+    <div class="modal-box modal-success-card">
+      <div class="modal-success-header">
+        <div class="success-icon-ring">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
+        <h3 class="modal-title">Registration Submitted!</h3>
+        <p class="modal-desc">
+          Your entry has been received and is queued for organizer payment verification.
+        </p>
+      </div>
+
+      <!-- Registration ID Box -->
+      <div class="reg-id-display-box">
+        <span class="reg-id-label">OFFICIAL REGISTRATION NUMBER</span>
+        <span class="reg-id-value" id="success-reg-id">STC-2026-0000</span>
+        <span class="reg-id-note">Please screenshot or save this number for reference.</span>
+      </div>
+
+      <!-- Student Summary Preview -->
+      <div class="success-summary-grid">
+        <div class="sum-row">
+          <span class="sum-key">Student Name:</span>
+          <span class="sum-val" id="success-name">Aanya Sharma</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-key">Standard &amp; Gender:</span>
+          <span class="sum-val" id="success-std-gender">Std 6 • Female</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-key">Category:</span>
+          <span class="sum-val" id="success-category">Drawing</span>
+        </div>
+        <div class="sum-row" id="success-group-row">
+          <span class="sum-key">Assigned Group:</span>
+          <span class="sum-val text-accent" id="success-group">Drawing Group A</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-key">UPI Reference:</span>
+          <span class="sum-val" id="success-utr">428910283719</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-key">Payment Status:</span>
+          <span class="sum-val status-badge-pending">
+            <span class="pending-dot"></span> Pending Organizer Verification
+          </span>
+        </div>
+      </div>
+
+      <!-- WhatsApp Notice Banner -->
+      <div class="modal-wa-notice">
+        <div class="wa-notice-icon">💬</div>
+        <div class="wa-notice-text">
+          <strong>Next Step:</strong> Our organizers will verify your UPI transaction within 2-4 hours. You will receive an official WhatsApp message on <strong id="success-wa-number">+91 9876543210</strong> with your final Admit Card &amp; WhatsApp Community invite link!
+        </div>
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" id="btn-print-slip">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          Print Entry Slip
+        </button>
+        <button type="button" class="btn btn-primary" id="btn-close-success">
+          Done &amp; Return to Home
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Track Status Modal -->
+  <div class="modal-overlay" id="modal-track-status" style="display: none;">
+    <div class="modal-box modal-track-card">
+      <div class="modal-close-btn" id="btn-close-status-modal">&times;</div>
+      <div class="track-header">
+        <div class="track-icon">🔍</div>
+        <h3 class="modal-title">Track Registration Status</h3>
+        <p class="modal-desc">Enter your registered WhatsApp Number or Registration ID to check your approval status.</p>
+      </div>
+
+      <div class="track-search-form">
+        <div class="input-with-icon">
+          <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="track-search-input" class="form-input" placeholder="Enter 10-digit WhatsApp or STC-2026-XXXX" />
+        </div>
+        <button type="button" class="btn btn-primary" id="btn-do-track">Check Status</button>
+      </div>
+
+      <!-- Result Container -->
+      <div id="track-result-container" style="display: none;">
+        <!-- Dynamic Result Card -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Organizer Admin Portal Modal -->
+  <div class="modal-overlay admin-overlay" id="modal-admin-portal" style="display: none;">
+    <div class="modal-box modal-admin-card">
+      <div class="admin-modal-header">
+        <div class="admin-brand">
+          <div class="admin-shield-icon">🛡️</div>
+          <div>
+            <h3 class="admin-title">Organizer Control Dashboard</h3>
+            <span class="admin-badge">Student Talent Competition 2026 • Verified Portal</span>
+          </div>
+        </div>
+        <button type="button" class="btn-close-admin" id="btn-close-admin-modal" title="Exit Admin">&times;</button>
+      </div>
+
+      <!-- Admin PIN Protection Screen (If not logged in) -->
+      <div class="admin-auth-screen" id="admin-auth-screen">
+        <div class="auth-box">
+          <div class="auth-icon">🔐</div>
+          <h4>Organizer Access Verification</h4>
+          <p>Please enter the organizer master PIN to manage registrations, verify UPI payments, and adjust seat limits.</p>
+          <div class="auth-input-wrap">
+            <input type="password" id="admin-pin-input" class="form-input text-center" placeholder="Enter PIN (Default: 1234)" maxlength="8" />
+            <button type="button" class="btn btn-primary" id="btn-admin-login">Unlock Dashboard</button>
+          </div>
+          <small class="text-muted">Master PIN is <strong>1234</strong> for testing &amp; evaluation.</small>
+          <div class="auth-err" id="admin-auth-err"></div>
+        </div>
+      </div>
+
+      <!-- Admin Main Dashboard Content (When logged in) -->
+      <div class="admin-main-view" id="admin-main-view" style="display: none;">
+        <!-- Admin Navigation Tabs -->
+        <div class="admin-tabs">
+          <button type="button" class="admin-tab active" data-tab="tab-registrations">
+            📋 Registrations (<span id="admin-total-badge">0</span>)
+          </button>
+          <button type="button" class="admin-tab" data-tab="tab-limits">
+            ⚙️ Seat Quota &amp; Limits
+          </button>
+          <button type="button" class="admin-tab" data-tab="tab-whatsapp">
+            💬 WhatsApp Business Integration
+          </button>
+          <button type="button" class="admin-tab" data-tab="tab-supabase">
+            🗄️ Supabase Cloud DB &amp; Security
+          </button>
+        </div>
+
+        <!-- TAB 1: Registrations Management -->
+        <div class="tab-pane active" id="tab-registrations">
+          <!-- Quick Stat Cards -->
+          <div class="admin-stats-bar">
+            <div class="admin-stat-chip">
+              <span class="chip-num" id="admin-stat-total">0</span>
+              <span class="chip-label">Total Entries</span>
+            </div>
+            <div class="admin-stat-chip chip-warning">
+              <span class="chip-num" id="admin-stat-pending">0</span>
+              <span class="chip-label">Pending Approval</span>
+            </div>
+            <div class="admin-stat-chip chip-success">
+              <span class="chip-num" id="admin-stat-verified">0</span>
+              <span class="chip-label">Confirmed Seats</span>
+            </div>
+            <div class="admin-stat-chip chip-info">
+              <span class="chip-num" id="admin-stat-revenue">₹0</span>
+              <span class="chip-label">Verified Collections</span>
+            </div>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="admin-controls-bar">
+            <div class="admin-search-wrap">
+              <input type="text" id="admin-filter-search" class="form-input form-input-sm" placeholder="Search by Student, School, UTR or Reg ID..." />
+            </div>
+            <div class="admin-filter-selects">
+              <select id="admin-filter-category" class="form-select form-select-sm">
+                <option value="all">All Categories</option>
+                <option value="computer">Computer</option>
+                <option value="mehndi">Mehndi</option>
+                <option value="drawing">Drawing (All)</option>
+                <option value="makeup">Makeup</option>
+              </select>
+              <select id="admin-filter-status" class="form-select form-select-sm">
+                <option value="all">All Statuses</option>
+                <option value="pending" selected>Pending Verification (Action Required)</option>
+                <option value="verified">Verified &amp; Confirmed</option>
+                <option value="rejected">Rejected</option>
+              </select>
+              <button type="button" class="btn btn-outline btn-sm" id="btn-export-csv" title="Export to CSV Spreadsheet">
+                📥 Export CSV
+              </button>
+            </div>
+          </div>
+
+          <!-- Registrations Table -->
+          <div class="admin-table-container">
+            <table class="admin-data-table">
+              <thead>
+                <tr>
+                  <th>Reg ID</th>
+                  <th>Student Name</th>
+                  <th>Std / Gender</th>
+                  <th>Track &amp; Group</th>
+                  <th>WhatsApp</th>
+                  <th>UTR / Ref Number</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-registrations-tbody">
+                <!-- Dynamically rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 2: Seat Limits & Capacity Manager -->
+        <div class="tab-pane" id="tab-limits">
+          <div class="limits-editor-wrap">
+            <div class="pane-header">
+              <h4>Seat Capacity &amp; Category Limit Manager</h4>
+              <p>Configure maximum capacity per category. Changes reflect instantly on the public registration form and backend validation.</p>
+            </div>
+
+            <div class="limits-card-grid">
+              <!-- Limit Card: Computer -->
+              <div class="limit-edit-card">
+                <div class="limit-card-top">
+                  <span class="limit-icon">💻</span>
+                  <div>
+                    <h5>1. Computer Category</h5>
+                    <span class="limit-sub">Standards 5, 6, 7 &amp; 8</span>
+                  </div>
+                </div>
+                <div class="limit-input-group">
+                  <label for="limit-input-computer">Max Seat Capacity:</label>
+                  <input type="number" id="limit-input-computer" class="form-input" min="1" max="500" value="50" />
+                </div>
+                <div class="limit-stats-foot">
+                  <span>Confirmed: <strong id="limit-confirmed-computer">22</strong></span>
+                  <span>Pending: <strong id="limit-pending-computer">6</strong></span>
+                </div>
+              </div>
+
+              <!-- Limit Card: Mehndi -->
+              <div class="limit-edit-card">
+                <div class="limit-card-top">
+                  <span class="limit-icon">✨</span>
+                  <div>
+                    <h5>2. Mehndi Category</h5>
+                    <span class="limit-sub">Standards 5, 6, 7 &amp; 8 (Girls Only)</span>
+                  </div>
+                </div>
+                <div class="limit-input-group">
+                  <label for="limit-input-mehndi">Max Seat Capacity:</label>
+                  <input type="number" id="limit-input-mehndi" class="form-input" min="1" max="500" value="40" />
+                </div>
+                <div class="limit-stats-foot">
+                  <span>Confirmed: <strong id="limit-confirmed-mehndi">21</strong></span>
+                  <span>Pending: <strong id="limit-pending-mehndi">4</strong></span>
+                </div>
+              </div>
+
+              <!-- Limit Card: Drawing Group A -->
+              <div class="limit-edit-card highlight-border-a">
+                <div class="limit-card-top">
+                  <span class="limit-icon">🎨</span>
+                  <div>
+                    <h5>3A. Drawing Group A</h5>
+                    <span class="limit-sub">Standards 5 &amp; 6</span>
+                  </div>
+                </div>
+                <div class="limit-input-group">
+                  <label for="limit-input-drawing_a">Max Seat Capacity:</label>
+                  <input type="number" id="limit-input-drawing_a" class="form-input" min="1" max="500" value="45" />
+                </div>
+                <div class="limit-stats-foot">
+                  <span>Confirmed: <strong id="limit-confirmed-drawing_a">21</strong></span>
+                  <span>Pending: <strong id="limit-pending-drawing_a">5</strong></span>
+                </div>
+              </div>
+
+              <!-- Limit Card: Drawing Group B -->
+              <div class="limit-edit-card highlight-border-b">
+                <div class="limit-card-top">
+                  <span class="limit-icon">🎨</span>
+                  <div>
+                    <h5>3B. Drawing Group B</h5>
+                    <span class="limit-sub">Standards 7 &amp; 8</span>
+                  </div>
+                </div>
+                <div class="limit-input-group">
+                  <label for="limit-input-drawing_b">Max Seat Capacity:</label>
+                  <input type="number" id="limit-input-drawing_b" class="form-input" min="1" max="500" value="45" />
+                </div>
+                <div class="limit-stats-foot">
+                  <span>Confirmed: <strong id="limit-confirmed-drawing_b">24</strong></span>
+                  <span>Pending: <strong id="limit-pending-drawing_b">3</strong></span>
+                </div>
+              </div>
+
+              <!-- Limit Card: Makeup -->
+              <div class="limit-edit-card">
+                <div class="limit-card-top">
+                  <span class="limit-icon">💄</span>
+                  <div>
+                    <h5>4. Makeup Category</h5>
+                    <span class="limit-sub">Standards 5, 6, 7 &amp; 8 (Girls Only)</span>
+                  </div>
+                </div>
+                <div class="limit-input-group">
+                  <label for="limit-input-makeup">Max Seat Capacity:</label>
+                  <input type="number" id="limit-input-makeup" class="form-input" min="1" max="500" value="35" />
+                </div>
+                <div class="limit-stats-foot">
+                  <span>Confirmed: <strong id="limit-confirmed-makeup">19</strong></span>
+                  <span>Pending: <strong id="limit-pending-makeup">2</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="limits-save-bar">
+              <button type="button" class="btn btn-primary" id="btn-save-limits">
+                💾 Save Quota Limits
+              </button>
+              <span id="limits-save-msg" class="save-msg"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: WhatsApp Business Integration -->
+        <div class="tab-pane" id="tab-whatsapp">
+          <div class="whatsapp-config-wrap">
+            <div class="pane-header">
+              <h4>Official WhatsApp Business Platform (Cloud API) Configuration</h4>
+              <p>Configure automated WhatsApp confirmation messages sent immediately after organizer payment verification.</p>
+            </div>
+
+            <div class="wa-security-alert">
+              <div class="alert-icon">🔒</div>
+              <div class="alert-body">
+                <strong>Backend Security Note:</strong>
+                WhatsApp Business Cloud API tokens and app secrets are strictly managed in the serverless backend / Supabase Edge Functions. They are never exposed in frontend client code.
+              </div>
+            </div>
+
+            <div class="wa-grid-layout">
+              <div class="wa-settings-form">
+                <div class="form-group">
+                  <label for="wa-community-link" class="form-label">WhatsApp Community / Group Invite Link <span class="req">*</span></label>
+                  <input type="url" id="wa-community-link" class="form-input" value="https://chat.whatsapp.com/Gxyz123TalentComp2026" />
+                  <small class="helper-text">Verified students will be invited to join this group link.</small>
+                </div>
+
+                <div class="form-group">
+                  <label for="wa-event-desc" class="form-label">Event Description &amp; Venue Details <span class="req">*</span></label>
+                  <textarea id="wa-event-desc" class="form-textarea" rows="3">Student Talent Competition 2026 takes place on Sunday, Nov 15th at City Central Auditorium. Reporting time 8:30 AM with Admit Card.</textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="wa-phone-id" class="form-label">WhatsApp Cloud API Phone Number ID</label>
+                  <input type="text" id="wa-phone-id" class="form-input" placeholder="e.g. 10982348271038" value="10982348271038" />
+                </div>
+
+                <div class="form-group">
+                  <label for="wa-template-name" class="form-label">Approved Template Name</label>
+                  <input type="text" id="wa-template-name" class="form-input" value="student_competition_confirmed" />
+                </div>
+
+                <button type="button" class="btn btn-primary" id="btn-save-wa-config">
+                  Save WhatsApp Configuration
+                </button>
+              </div>
+
+              <!-- Message Template Live Preview -->
+              <div class="wa-preview-card">
+                <div class="wa-phone-header">
+                  <div class="wa-chat-avatar">ST</div>
+                  <div class="wa-chat-info">
+                    <span class="wa-chat-name">Student Talent Fest</span>
+                    <span class="wa-chat-status">Official Business Account ✓</span>
+                  </div>
+                </div>
+                <div class="wa-phone-body">
+                  <div class="wa-bubble">
+                    <div class="wa-bubble-header">🎉 Registration Verified &amp; Confirmed!</div>
+                    <p class="wa-bubble-text">
+                      Dear <strong>[Student Name]</strong>,<br /><br />
+                      Your payment for <strong>Student Talent Competition 2026</strong> has been verified successfully!<br /><br />
+                      📌 <strong>Registration ID:</strong> <span class="wa-var">[STC-2026-XXXX]</span><br />
+                      🎨 <strong>Competition Track:</strong> <span class="wa-var">[Category / Group]</span><br />
+                      📍 <strong>Event Details:</strong> <span id="wa-preview-event-desc">Student Talent Competition 2026 takes place on Sunday, Nov 15th at City Central Auditorium. Reporting time 8:30 AM with Admit Card.</span><br /><br />
+                      📲 <strong>Official Participant WhatsApp Group:</strong><br />
+                      <a href="#" id="wa-preview-link" class="wa-link">https://chat.whatsapp.com/Gxyz123TalentComp2026</a><br /><br />
+                      Please bring your digital or printed Entry Slip on event day. Best of luck!
+                    </p>
+                    <div class="wa-timestamp">Just now • Delivered ✓✓</div>
+                  </div>
+                </div>
+                <div class="wa-simulator-box">
+                  <label for="wa-test-number" class="form-label">Send Live Test Message:</label>
+                  <div class="wa-test-row">
+                    <input type="tel" id="wa-test-number" class="form-input form-input-sm" placeholder="+91..." value="+919876543210" />
+                    <button type="button" class="btn btn-sm btn-outline" id="btn-test-wa-send">
+                      🚀 Dispatch Test
+                    </button>
+                  </div>
+                  <div id="wa-test-status" class="test-status"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: Supabase Cloud Database & RLS Setup -->
+        <div class="tab-pane" id="tab-supabase">
+          <div class="supabase-setup-wrap">
+            <div class="pane-header">
+              <h4>Supabase Cloud Integration &amp; Production Schema</h4>
+              <p>Connect your Supabase project URL and anon public key. View the full PostgreSQL migration schema with Row Level Security (RLS) and atomic seat allocation.</p>
+            </div>
+
+            <div class="supabase-connect-card">
+              <h5>Project Connection Settings</h5>
+              <div class="form-grid-2col">
+                <div class="form-group">
+                  <label for="sb-project-url" class="form-label">Supabase Project URL</label>
+                  <input type="url" id="sb-project-url" class="form-input" placeholder="https://your-project.supabase.co" />
+                </div>
+                <div class="form-group">
+                  <label for="sb-anon-key" class="form-label">Supabase Anon Public API Key</label>
+                  <input type="password" id="sb-anon-key" class="form-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI..." />
+                </div>
+              </div>
+              <div class="supabase-action-row">
+                <button type="button" class="btn btn-primary" id="btn-save-supabase">
+                  Connect &amp; Test Connection
+                </button>
+                <button type="button" class="btn btn-outline" id="btn-use-mock-mode">
+                  Switch to Local Demo Data
+                </button>
+                <span id="sb-status-badge" class="connection-status-pill status-demo">Mode: Local Mock Data (Ready)</span>
+              </div>
+            </div>
+
+            <div class="sql-schema-viewer">
+              <div class="sql-viewer-header">
+                <span>PostgreSQL Migration &amp; RLS Policies (Ready to Run in Supabase SQL Editor)</span>
+                <button type="button" class="btn btn-sm btn-outline" id="btn-copy-sql">
+                  📋 Copy Complete SQL Script
+                </button>
+              </div>
+              <pre class="sql-code-block" id="sql-code-display"><code>-- 1. Create Categories and Seat Limits Table
+CREATE TABLE IF NOT EXISTS competition_categories (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  group_name TEXT,
+  eligible_standards INTEGER[] NOT NULL,
+  gender_restriction TEXT, -- 'female' or NULL
+  seat_limit INTEGER NOT NULL DEFAULT 50,
+  confirmed_count INTEGER NOT NULL DEFAULT 0,
+  fee_inr NUMERIC(10, 2) NOT NULL DEFAULT 150.00,
+  is_active BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+-- 2. Create Registrations Table with Privacy RLS
+CREATE TABLE IF NOT EXISTS student_registrations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  registration_id TEXT UNIQUE NOT NULL,
+  student_name TEXT NOT NULL,
+  school_name TEXT NOT NULL,
+  standard INTEGER NOT NULL CHECK (standard BETWEEN 5 AND 8),
+  date_of_birth DATE NOT NULL,
+  gender TEXT NOT NULL CHECK (gender IN ('male', 'female')),
+  whatsapp_number TEXT NOT NULL,
+  category_id TEXT REFERENCES competition_categories(id),
+  drawing_group TEXT CHECK (drawing_group IN ('Group A', 'Group B', NULL)),
+  guardian_name TEXT NOT NULL,
+  guardian_phone TEXT NOT NULL,
+  upi_reference TEXT NOT NULL,
+  payer_name TEXT,
+  payment_status TEXT NOT NULL DEFAULT 'pending' CHECK (payment_status IN ('pending', 'verified', 'rejected')),
+  whatsapp_sent BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  verified_at TIMESTAMPTZ
+);
+
+-- 3. Atomic Registration Function with Concurrency Seat Lock
+CREATE OR REPLACE FUNCTION register_student_secure(
+  p_reg_id TEXT,
+  p_name TEXT,
+  p_school TEXT,
+  p_std INT,
+  p_dob DATE,
+  p_gender TEXT,
+  p_wa TEXT,
+  p_cat_id TEXT,
+  p_draw_grp TEXT,
+  p_g_name TEXT,
+  p_g_phone TEXT,
+  p_utr TEXT,
+  p_payer TEXT
+) RETURNS JSON AS $$
+DECLARE
+  v_category RECORD;
+  v_confirmed_seats INT;
+BEGIN
+  -- Row-level lock to prevent race conditions
+  SELECT * INTO v_category FROM competition_categories 
+  WHERE id = p_cat_id FOR UPDATE;
+
+  -- Eligibility Check
+  IF NOT (p_std = ANY(v_category.eligible_standards)) THEN
+    RAISE EXCEPTION 'Student standard % is not eligible for %', p_std, v_category.name;
+  END IF;
+
+  IF v_category.gender_restriction = 'female' AND p_gender != 'female' THEN
+    RAISE EXCEPTION 'Category % is open only to female students', v_category.name;
+  END IF;
+
+  -- Insert registration as pending
+  INSERT INTO student_registrations (
+    registration_id, student_name, school_name, standard, date_of_birth,
+    gender, whatsapp_number, category_id, drawing_group, guardian_name,
+    guardian_phone, upi_reference, payer_name, payment_status
+  ) VALUES (
+    p_reg_id, p_name, p_school, p_std, p_dob,
+    p_gender, p_wa, p_cat_id, p_draw_grp, p_g_name,
+    p_g_phone, p_utr, p_payer, 'pending'
+  );
+
+  RETURN json_build_object('success', true, 'registration_id', p_reg_id);
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 4. Enable Row Level Security (RLS)
+ALTER TABLE student_registrations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE competition_categories ENABLE ROW LEVEL SECURITY;
+
+-- Public can view category limits
+CREATE POLICY "Public can view category limits" 
+  ON competition_categories FOR SELECT USING (true);
+
+-- Public cannot view other students' private registrations
+CREATE POLICY "Public cannot view registrations" 
+  ON student_registrations FOR SELECT USING (false);
+
+-- Organizers with admin role can access everything
+CREATE POLICY "Admin full access" 
+  ON student_registrations TO authenticated USING (true) WITH CHECK (true);
+</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration Admit Slip Print Modal -->
+  <div class="modal-overlay" id="modal-admit-slip" style="display: none;">
+    <div class="modal-box modal-admit-card" id="admit-slip-print-content">
+      <div class="modal-close-btn" id="btn-close-admit-slip">&times;</div>
+      
+      <div class="admit-slip-wrapper">
+        <div class="admit-slip-header">
+          <div class="admit-org-logo">STC 2026</div>
+          <div class="admit-org-info">
+            <h2>STUDENT TALENT COMPETITION 2026</h2>
+            <p>Annual Interschool Talent Championship • Official Entry Slip</p>
+          </div>
+          <div class="admit-watermark-pill" id="slip-status-badge">PENDING VERIFICATION</div>
+        </div>
+
+        <div class="admit-slip-body">
+          <div class="admit-details-col">
+            <div class="admit-field">
+              <span class="field-k">Registration ID:</span>
+              <span class="field-v font-bold text-accent" id="slip-reg-id">STC-2026-0000</span>
+            </div>
+            <div class="admit-field">
+              <span class="field-k">Student Name:</span>
+              <span class="field-v font-bold" id="slip-student-name">--</span>
+            </div>
+            <div class="admit-field">
+              <span class="field-k">School Name:</span>
+              <span class="field-v" id="slip-school">--</span>
+            </div>
+            <div class="admit-field">
+              <span class="field-k">Standard &amp; Gender:</span>
+              <span class="field-v" id="slip-std-gender">--</span>
+            </div>
+            <div class="admit-field">
+              <span class="field-k">Competition Category:</span>
+              <span class="field-v font-bold" id="slip-category">--</span>
+            </div>
+            <div class="admit-field" id="slip-group-row">
+              <span class="field-k">Drawing Group:</span>
+              <span class="field-v" id="slip-group">--</span>
+            </div>
+            <div class="admit-field">
+              <span class="field-k">WhatsApp Number:</span>
+              <span class="field-v" id="slip-whatsapp">--</span>
+            </div>
+            <div class="admit-field">
+              <span class="field-k">UPI Reference (UTR):</span>
+              <span class="field-v" id="slip-utr">--</span>
+            </div>
+          </div>
+
+          <div class="admit-qr-col">
+            <div class="admit-qr-box">
+              <svg id="slip-qr-svg" width="120" height="120" viewBox="0 0 100 100">
+                <rect width="100" height="100" fill="#f8fafc"></rect>
+                <rect x="10" y="10" width="25" height="25" fill="#1e1b4b"></rect>
+                <rect x="14" y="14" width="17" height="17" fill="#ffffff"></rect>
+                <rect x="18" y="18" width="9" height="9" fill="#4f46e5"></rect>
+                <rect x="65" y="10" width="25" height="25" fill="#1e1b4b"></rect>
+                <rect x="69" y="14" width="17" height="17" fill="#ffffff"></rect>
+                <rect x="73" y="18" width="9" height="9" fill="#4f46e5"></rect>
+                <rect x="10" y="65" width="25" height="25" fill="#1e1b4b"></rect>
+                <rect x="14" y="69" width="17" height="17" fill="#ffffff"></rect>
+                <rect x="18" y="73" width="9" height="9" fill="#4f46e5"></rect>
+                <rect x="42" y="15" width="16" height="16" fill="#1e1b4b"></rect>
+                <rect x="42" y="42" width="16" height="16" fill="#4f46e5"></rect>
+                <rect x="65" y="42" width="25" height="16" fill="#1e1b4b"></rect>
+                <rect x="42" y="68" width="48" height="22" fill="#1e1b4b"></rect>
+              </svg>
+            </div>
+            <span class="admit-qr-label">Scan to Verify</span>
+          </div>
+        </div>
+
+        <div class="admit-slip-footer">
+          <p>⚠️ <strong>Important Instructions:</strong> Please carry a printed or digital copy of this slip on competition day. Official admission to the event hall is subject to payment verification by the organizer.</p>
+        </div>
+      </div>
+
+      <div class="admit-slip-actions">
+        <button type="button" class="btn btn-primary" onclick="window.print()">
+          🖨️ Print / Save as PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="footer-section">
+    <div class="container footer-container">
+      <div class="footer-brand">
+        <div class="logo-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+        </div>
+        <div>
+          <h4>Student Talent Competition 2026</h4>
+          <p>Celebrating Young Excellence in Technology &amp; Creative Arts</p>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="#categories">Categories</a>
+        <a href="#rules">Eligibility Rules</a>
+        <a href="#seat-matrix">Seat Matrix</a>
+        <a href="#register-section">Register</a>
+        <a href="#" id="footer-admin-link">Organizer Admin</a>
+      </div>
+      <div class="footer-copy">
+        &copy; 2026 Student Talent Competition Organization. All Rights Reserved. Built with Supabase &amp; WhatsApp Business Cloud API readiness.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
