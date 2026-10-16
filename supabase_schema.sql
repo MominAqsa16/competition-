@@ -68,7 +68,7 @@ ON CONFLICT (id) DO NOTHING;
 -- 3. STUDENT REGISTRATIONS TABLE (STRICT CONSTRAINTS & PRIVACY)
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.student_registrations (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   registration_id TEXT UNIQUE NOT NULL,             -- e.g. 'STC-2026-8492'
   student_name TEXT NOT NULL,
   school_name TEXT NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS public.student_registrations (
   date_of_birth DATE NOT NULL,
   gender TEXT NOT NULL CHECK (gender IN ('male', 'female')),
   whatsapp_number TEXT NOT NULL,                    -- Must include country code
-  category_id TEXT NOT NULL REFERENCES public.competition_categories(id),
+  category_id TEXT NOT NULL,
   category_name TEXT NOT NULL,
   drawing_group TEXT CHECK (drawing_group IN ('Group A', 'Group B', NULL)),
   guardian_name TEXT NOT NULL,
@@ -337,17 +337,23 @@ CREATE POLICY "Public Read Event Settings"
   FOR SELECT 
   USING (true);
 
--- Student Registrations: PUBLIC CANNOT SELECT DIRECTLY (Protects Student Privacy)
-CREATE POLICY "Deny Public Direct Select Registrations" 
-  ON public.student_registrations 
-  FOR SELECT 
-  USING (false);
-
--- Public can INSERT their registration (enforced via atomic function)
+-- Student Registrations: Allow Public Insert for student entries
 CREATE POLICY "Allow Public Insert Registrations" 
   ON public.student_registrations 
   FOR INSERT 
   WITH CHECK (true);
+
+-- Allow Public Select for live verification & status checks
+CREATE POLICY "Allow Public Read Registrations" 
+  ON public.student_registrations 
+  FOR SELECT 
+  USING (true);
+
+-- Allow Updates for Verification
+CREATE POLICY "Allow Public Update Registrations" 
+  ON public.student_registrations 
+  FOR UPDATE 
+  USING (true);
 
 -- Authenticated Organizers/Admins have full access
 CREATE POLICY "Organizer Full Access Categories" 

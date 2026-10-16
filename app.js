@@ -143,29 +143,243 @@
     }
   ];
 
+  const DEFAULT_SUPABASE_CFG = {
+    url: 'https://ivihkpkajrszisrrvowm.supabase.co',
+    key: 'sb_publishable_oC2Fk2TENAbYGBmC5y6QTA_0If8sMgX',
+    active: true
+  };
+
   // Storage Keys
   const STORAGE_LIMITS = 'stc_limits_v1';
   const STORAGE_REGISTRATIONS = 'stc_registrations_v1';
   const STORAGE_SETTINGS = 'stc_settings_v1';
   const STORAGE_SUPABASE_CFG = 'stc_supabase_cfg_v1';
+  const STORAGE_THEME = 'stc_theme_v1';
 
   // Global State in Memory
   let state = {
     limits: JSON.parse(localStorage.getItem(STORAGE_LIMITS)) || DEFAULT_LIMITS,
     registrations: JSON.parse(localStorage.getItem(STORAGE_REGISTRATIONS)) || SAMPLE_REGISTRATIONS,
     settings: JSON.parse(localStorage.getItem(STORAGE_SETTINGS)) || DEFAULT_EVENT_SETTINGS,
-    supabaseCfg: JSON.parse(localStorage.getItem(STORAGE_SUPABASE_CFG)) || { url: '', key: '', active: false },
+    supabaseCfg: JSON.parse(localStorage.getItem(STORAGE_SUPABASE_CFG)) || DEFAULT_SUPABASE_CFG,
     isAdminLoggedIn: false,
     currentSelectedCat: '',
     currentSelectedStd: null,
     currentSelectedGender: ''
   };
 
+  // Ensure user's Supabase credentials are always active
+  if (!state.supabaseCfg.url || state.supabaseCfg.url === '') {
+    state.supabaseCfg = DEFAULT_SUPABASE_CFG;
+  }
+
   function saveState() {
     localStorage.setItem(STORAGE_LIMITS, JSON.stringify(state.limits));
     localStorage.setItem(STORAGE_REGISTRATIONS, JSON.stringify(state.registrations));
     localStorage.setItem(STORAGE_SETTINGS, JSON.stringify(state.settings));
     localStorage.setItem(STORAGE_SUPABASE_CFG, JSON.stringify(state.supabaseCfg));
+  }
+
+  // =========================================================================
+  // THEME MANAGEMENT (DARK / LIGHT MODE)
+  // =========================================================================
+  let currentTheme = localStorage.getItem(STORAGE_THEME) || 'dark';
+
+  function applyTheme(theme) {
+    currentTheme = theme;
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(STORAGE_THEME, theme);
+
+    const toggleBtn = document.getElementById('btn-theme-toggle');
+    if (toggleBtn) {
+      toggleBtn.setAttribute('title', theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme');
+    }
+
+    const mobileThemeVal = document.getElementById('mobile-theme-text');
+    if (mobileThemeVal) {
+      mobileThemeVal.textContent = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+  }
+
+  function toggleTheme() {
+    const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(targetTheme);
+    showToast(`Switched to ${targetTheme === 'light' ? 'Light Theme ☀️' : 'Dark Theme 🌙'}`, 'info');
+  }
+
+  // =========================================================================
+  // SUPABASE CLIENT & DATABASE SYNC
+  // =========================================================================
+  let supabaseClientInstance = null;
+
+  function getSupabaseClient() {
+    if (supabaseClientInstance) return supabaseClientInstance;
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+      try {
+        supabaseClientInstance = window.supabase.createClient(state.supabaseCfg.url, state.supabaseCfg.key);
+      } catch (err) {
+        console.warn('Supabase createClient error:', err);
+      }
+    }
+    return supabaseClientInstance;
+  }
+
+  async function saveRegistrationToSupabase(reg) {
+    if (!state.supabaseCfg || !state.supabaseCfg.url || !state.supabaseCfg.key) return;
+
+    const payload = {
+      registration_id: reg.registration_id,
+      student_name: reg.student_name,
+      school_name: reg.school_name,
+      standard: reg.standard,
+      date_of_birth: reg.date_of_birth,
+      gender: reg.gender,
+      whatsapp_number: reg.whatsapp_number,
+      category_id: reg.category_id,
+      category_name: reg.category_name,
+      drawing_group: reg.drawing_group,
+      guardian_name: reg.guardian_name,
+      guardian_phone: reg.guardian_phone,
+      upi_reference: reg.upi_reference,
+      payer_name: reg.payer_name || reg.guardian_name,
+      payment_status: 'pending',
+      whatsapp_sent: false
+    };
+
+    console.log('[Supabase Cloud] Initiating insert to ivihkpkajrszisrrvowm.supabase.co:', payload);
+
+    try {
+      // 1. Try Supabase Client SDK if loaded
+      const client = getSupabaseClient();
+      if (client) {
+        const { data, error } = await client
+          .from('student_registrations')
+          .insert([payload])
+          .select();
+
+        if (!error) {
+          console.log('[Supabase SDK] Registration saved successfully:', data);
+          showToast('✓ Stored directly in your Supabase database!', 'success');
+          return;
+        } else {
+          console.warn('[Supabase SDK Warning]:', error);
+        }
+      }
+
+      // 2. Direct REST API Fallback
+      const endpoint = `${state.supabaseCfg.url}/rest/v1/student_registrations`;
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'apikey': state.supabaseCfg.key,
+          'Authorization': `Bearer ${state.supabaseCfg.key}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        const result = await res.json();
+        console.log('[Supabase REST] Record created:', result);
+        showToast('✓ Stored in your Supabase Database (ivihkpkajrszisrrvowm)!', 'success');
+      } else {
+        const errJson = await res.json().catch(() => ({}));
+        console.warn('[Supabase REST Response]:', res.status, errJson);
+        if (errJson.code === 'PGRST205') {
+          showToast('Saved locally. Please run the SQL migration in Supabase SQL editor to create the table.', 'warning');
+        } else {
+          showToast(`Saved locally. Supabase response: ${errJson.message || 'Verification needed'}`, 'warning');
+        }
+      }
+    } catch (err) {
+      console.warn('[Supabase Network]:', err);
+      showToast('Registration saved locally (Supabase network sync pending)', 'warning');
+    }
+  }
+
+  async function updateRegistrationInSupabase(registrationId, fields) {
+    if (!state.supabaseCfg || !state.supabaseCfg.url || !state.supabaseCfg.key) return;
+
+    try {
+      const client = getSupabaseClient();
+      if (client) {
+        await client
+          .from('student_registrations')
+          .update(fields)
+          .eq('registration_id', registrationId);
+        return;
+      }
+
+      const endpoint = `${state.supabaseCfg.url}/rest/v1/student_registrations?registration_id=eq.${registrationId}`;
+      await fetch(endpoint, {
+        method: 'PATCH',
+        headers: {
+          'apikey': state.supabaseCfg.key,
+          'Authorization': `Bearer ${state.supabaseCfg.key}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(fields)
+      });
+    } catch (err) {
+      console.warn('Supabase update error:', err);
+    }
+  }
+
+  async function fetchRegistrationsFromSupabase() {
+    if (!state.supabaseCfg || !state.supabaseCfg.url || !state.supabaseCfg.key) return;
+
+    try {
+      const client = getSupabaseClient();
+      if (client) {
+        const { data, error } = await client
+          .from('student_registrations')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!error && data && Array.isArray(data) && data.length > 0) {
+          console.log('[Supabase Cloud] Fetched live registrations:', data.length);
+          data.forEach(cloudReg => {
+            const exists = state.registrations.some(r => r.registration_id === cloudReg.registration_id);
+            if (!exists) {
+              state.registrations.unshift(cloudReg);
+            }
+          });
+          saveState();
+          updateSeatDisplays();
+          if (state.isAdminLoggedIn) renderAdminPortal();
+          showToast(`Connected to Supabase! Loaded ${data.length} entries.`, 'success');
+          return;
+        }
+      }
+
+      const endpoint = `${state.supabaseCfg.url}/rest/v1/student_registrations?select=*&order=created_at.desc`;
+      const res = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+          'apikey': state.supabaseCfg.key,
+          'Authorization': `Bearer ${state.supabaseCfg.key}`
+        }
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          console.log('[Supabase REST] Fetched live registrations:', data.length);
+          data.forEach(cloudReg => {
+            const exists = state.registrations.some(r => r.registration_id === cloudReg.registration_id);
+            if (!exists) {
+              state.registrations.unshift(cloudReg);
+            }
+          });
+          saveState();
+          updateSeatDisplays();
+          if (state.isAdminLoggedIn) renderAdminPortal();
+        }
+      }
+    } catch (err) {
+      console.warn('Could not query Supabase table (offline or table pending):', err);
+    }
   }
 
   // =========================================================================
@@ -619,6 +833,9 @@
     saveState();
     updateSeatDisplays();
 
+    // Store in Supabase Cloud Database (ivihkpkajrszisrrvowm.supabase.co)
+    saveRegistrationToSupabase(newRegistration);
+
     // Show Success Modal
     displaySuccessModal(newRegistration);
     form.reset();
@@ -993,6 +1210,13 @@
 
     showToast(`Payment verified for ${reg.student_name}! Seat confirmed. Official WhatsApp notification queued.`, 'success');
 
+    // Update in Supabase Cloud Database
+    updateRegistrationInSupabase(reg.registration_id, {
+      payment_status: 'verified',
+      verified_at: reg.verified_at,
+      whatsapp_sent: true
+    });
+
     // Trigger WhatsApp Simulator Preview
     simulateWhatsAppDispatch(reg);
   }
@@ -1009,6 +1233,11 @@
     saveState();
     updateSeatDisplays();
     renderAdminPortal();
+
+    // Update in Supabase Cloud Database
+    updateRegistrationInSupabase(reg.registration_id, {
+      payment_status: 'rejected'
+    });
 
     showToast(`Registration for ${reg.student_name} marked as Rejected.`, 'warning');
   }
@@ -1428,17 +1657,29 @@ Status: DISPATCHED SUCCESSFULLY via Supabase Edge Function`);
         showToast('Switched to local sample data mode.', 'success');
       });
     }
+    // Theme Toggle Listeners (Desktop and Mobile)
+    const themeBtn = document.getElementById('btn-theme-toggle');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', toggleTheme);
+    }
+
+    const mobileThemeBtn = document.getElementById('btn-mobile-theme');
+    if (mobileThemeBtn) {
+      mobileThemeBtn.addEventListener('click', toggleTheme);
+    }
   }
 
   // =========================================================================
   // BOOTSTRAP APPLICATION
   // =========================================================================
   window.addEventListener('DOMContentLoaded', () => {
+    applyTheme(currentTheme);
     updateSeatDisplays();
     updateUpiDetails();
     initCountdown();
     initEventListeners();
-    console.log('Student Talent Competition 2026 Portal Initialized Successfully.');
+    fetchRegistrationsFromSupabase();
+    console.log('Student Talent Competition 2026 Portal Initialized with Supabase & Theme support.');
   });
 
 })();
